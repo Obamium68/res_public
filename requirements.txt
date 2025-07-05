@@ -1,2 +1,3 @@
 eth_hash==0.7.1
 tqdm==4.67.1
+pycryptodome==3.19.0
