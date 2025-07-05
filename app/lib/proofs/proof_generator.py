@@ -26,11 +26,6 @@ def get_fibonacci_sequence(data):
     return t    
 
 
-def get_data_from_verifier():
-    file = open("/communication.json")
-    data = json.load(file)
-    return data
-
 def generate_proof(data, query_num, ver):
     verifier_data = json.loads(ver)
     proof = {}
@@ -111,8 +106,6 @@ def generate_proof(data, query_num, ver):
     
     # === Decommitment per FRI ===
     challenges = verifier_data["challenges"]
-    #inf = open("trueG.json")
-    #challenges = json.load(inf)
     proof["fri_decommitments"] = decommit_fri(ev_points, f_merkle, fri_layers, fri_merkles, challenges,query_num )
     return proof
 
@@ -121,4 +114,5 @@ def run_proof_generation(input, queries,challenges):
     print(json.dumps(proof_data, indent=2))
     sys.stdout.flush()
 
-run_proof_generation(sys.argv[1],sys.argv[2], sys.argv[3])
+if __name__ == "__main__":
+    run_proof_generation(sys.argv[1],sys.argv[2], sys.argv[3])

@@ -1,15 +1,15 @@
 import { ElectionTimer } from "@/app/components/elections/ElectionVisualizer";
 import { Election } from "@/app/lib/models/Election";
 import { formatDateTime } from "@/app/lib/utils/Dates";
+
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ElectionPage({ params }: PageProps) {
   const electionId = (await params).id;
-
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/elections/${electionId}`,
     {
@@ -26,7 +26,6 @@ export default async function ElectionPage({ params }: PageProps) {
   return (
     <div className="container mx-auto px-8 py-6">
       <h1 className="text-4xl font-bold mb-4">{election.name}</h1>
-
       <div className="mb-4">
         <p>
           <strong>Tipo:</strong> {election.type === 0 ? "PARTY" : "GOVERNMENT"}
@@ -40,14 +39,12 @@ export default async function ElectionPage({ params }: PageProps) {
         <p>
           <strong>Attiva:</strong> {election.active ? "✅" : "❌"}
         </p>
-
         {election.active && (
           <div className="mt-2">
             <ElectionTimer endDate={election.end_date} />
           </div>
         )}
       </div>
-
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">Candidati</h2>
         <ul className="space-y-2">
@@ -68,7 +65,6 @@ export default async function ElectionPage({ params }: PageProps) {
           ))}
         </ul>
       </div>
-
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">
           Elettori: {election.voters.length},

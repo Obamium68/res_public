@@ -74,13 +74,3 @@ const elections: Election[] = [
     type: 1, // ElectionType.GOVERNMENT
   },
 ];
-
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = parseInt((await params).id);
-
-
-  return NextResponse.json(elections[id - 1]);
-}

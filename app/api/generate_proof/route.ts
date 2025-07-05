@@ -1,8 +1,8 @@
-// app/api/proof/route.ts
+// app/api/generate_proof/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { spawn } from "child_process";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const body = await request.json();
     const { data } = body;
@@ -14,11 +14,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return new Promise((resolve) => {
+    return new Promise<NextResponse>((resolve) => {
       const pythonProcess = spawn("python3", [
         "app/lib/proofs/proof_generator.py",
         data.toString(),
-        5,
+        "5",
         JSON.stringify({
           poly_coeffs: [465390293, 145267510, 1547257383],
           folding_coeffs: [
@@ -62,12 +62,4 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-}
-
-// Keep GET method for backward compatibility (optional)
-export async function GET() {
-  return NextResponse.json(
-    { error: "Use POST method with data parameter" },
-    { status: 405 }
-  );
 }

@@ -6,7 +6,7 @@ import { join } from "path";
 import { randomUUID } from "crypto";
 import { existsSync } from "fs";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     // Leggi il body come JSON
     const body = await request.json();
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return new Promise(async (resolve) => {
+    return new Promise<NextResponse>(async (resolve) => {
       const tempFileName = `proof_${randomUUID()}.json`;
       const tempDir = join(process.cwd(), "tmp");
       const tempFilePath = join(tempDir, tempFileName);
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
         // Timeout per evitare processi che rimangono appesi
         setTimeout(async () => {
-          if (processCompleted) return; 
+          if (processCompleted) return;
           processCompleted = true;
 
           pythonProcess.kill();
@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
               { status: 408 }
             )
           );
-        }, 30000); 
+        }, 30000);
       } catch (fileError) {
         console.error("Error creating temp file:", fileError);
         await cleanupTempFile();
